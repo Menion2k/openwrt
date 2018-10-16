@@ -43,7 +43,7 @@ PKG_DRIVERS = \
 	rt61-pci rt73-usb \
 	rtl8180 rtl8187 \
 	rtlwifi rtlwifi-pci rtlwifi-btcoexist rtlwifi-usb rtl8192c-common \
-	rtl8192ce rtl8192se rtl8192de rtl8192cu rtl8821ae \
+	rtl8192ce rtl8192se rtl8192de rtl8192cu rtl8821ae r8188eu \
 	rtl8xxxu \
 	wlcore wl12xx wl18xx \
 	zd1211rw
@@ -1396,6 +1396,14 @@ $(call KernelPackage/rtl818x/Default)
   AUTOLOAD:=$(call AutoProbe,rtl8187)
 endef
 
+define KernelPackage/r8188eu
+$(call KernelPackage/rtl818x/Default)
+  TITLE+= (RTL8188EU support (staging))
+  DEPENDS:=@USB_SUPPORT +kmod-usb-core +rtl8188eu-firmware +kmod-mac80211 +kmod-cfg80211 +kmod-lib80211
+  FILES:=$(PKG_BUILD_DIR)/drivers/staging/rtl8188eu/r8188eu.ko
+  AUTOLOAD:=$(call AutoProbe,r8188eu)
+endef
+
 define KernelPackage/rtlwifi/config
 	config PACKAGE_RTLWIFI_DEBUG
 		bool "Realtek wireless debugging"
@@ -1751,6 +1759,9 @@ config-$(call config_package,mwifiex-pcie) += MWIFIEX MWIFIEX_PCIE
 config-$(call config_package,mwifiex-sdio) += MWIFIEX MWIFIEX_SDIO
 config-$(call config_package,rtl8180) += RTL8180
 config-$(call config_package,rtl8187) += RTL8187
+config-$(call config_package,r8188eu) += R8188EU
+config-y += 88EU_AP_MODE
+config-y += STAGING
 config-$(call config_package,wlcore) += WLCORE WLCORE_SDIO
 config-$(call config_package,wl12xx) += WL12XX
 config-$(call config_package,wl18xx) += WL18XX
@@ -1995,6 +2006,7 @@ $(eval $(call KernelPackage,rt61-pci))
 $(eval $(call KernelPackage,rt73-usb))
 $(eval $(call KernelPackage,rtl8180))
 $(eval $(call KernelPackage,rtl8187))
+$(eval $(call KernelPackage,r8188eu))
 $(eval $(call KernelPackage,rtlwifi))
 $(eval $(call KernelPackage,rtlwifi-pci))
 $(eval $(call KernelPackage,rtlwifi-btcoexist))

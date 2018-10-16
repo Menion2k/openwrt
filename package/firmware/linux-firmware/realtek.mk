@@ -10,9 +10,8 @@ $(eval $(call BuildPackage,r8169-firmware))
 Package/rtl8188eu-firmware = $(call Package/firmware-default,RealTek RTL8188EU firmware)
 define Package/rtl8188eu-firmware/install
 	$(INSTALL_DIR) $(1)/lib/firmware/rtlwifi
-	$(CP) \
-		$(PKG_BUILD_DIR)/rtlwifi/rtl8188eufw.bin \
-		$(1)/lib/firmware/rtlwifi
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/rtlwifi/rtl8188eufw.bin $(1)/lib/firmware/rtlwifi
+	$(INSTALL_DATA) $(PKG_BUILD_DIR)/rtlwifi/rtl8188efw.bin $(1)/lib/firmware/rtlwifi
 endef
 $(eval $(call BuildPackage,rtl8188eu-firmware))
 
